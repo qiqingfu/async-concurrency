@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="module">
+    import TaskPool from "/src/index.js"
+
+    const taskPool = new TaskPool(2)
+
+    const task = timeout => new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(timeout)
+      }, timeout)
+    })
+
+    const taskList = [1000, 3000, 200, 1300, 800, 2000]
+
+    async function startNoConcurrentControl() {
+      console.time()
+      await Promise.all(taskList.map(timeout => taskPool.add(task, timeout)))
+      console.timeEnd()
+    }
+
+    startNoConcurrentControl()
+
+</script>
+</body>
+</html>
